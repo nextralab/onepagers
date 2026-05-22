@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark" />
+<meta name="theme-color" content="#09090b" />
+<title>NextraLab — One-pagers</title>
+<meta name="description" content="One-pagers comerciais NextraLab" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#09090b;
+    --card:#18181b;
+    --primary:#a855f7;
+    --accent:#f4ff01;
+    --text:#fafafa;
+    --text-sec:rgba(255,255,255,0.65);
+    --border:rgba(168,85,247,0.2);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;}
+  body{padding:48px 24px 80px;display:flex;flex-direction:column;align-items:center;}
+
+  .wrap{max-width:760px;width:100%;}
+
+  .header{text-align:center;margin-bottom:48px;}
+  .eyebrow{font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--primary);margin-bottom:12px;}
+  h1{font-size:clamp(32px,5vw,44px);font-weight:800;letter-spacing:-0.02em;line-height:1.1;margin-bottom:16px;}
+  .sub{font-size:16px;color:var(--text-sec);line-height:1.6;max-width:520px;margin:0 auto;}
+
+  .grid{display:grid;gap:16px;}
+
+  .card{
+    display:block;
+    text-decoration:none;
+    color:inherit;
+    background:linear-gradient(180deg,#141417 0%,#0d0d0f 100%);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:28px 28px;
+    transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+    position:relative;
+    overflow:hidden;
+  }
+  .card::before{
+    content:"";
+    position:absolute;top:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,var(--primary),transparent);
+    opacity:0.6;
+  }
+  .card:hover{transform:translateY(-2px);border-color:rgba(168,85,247,0.45);box-shadow:0 8px 32px rgba(168,85,247,0.12);}
+
+  .card-row{display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .card-text{flex:1;min-width:0;}
+  .card-title{font-size:18px;font-weight:700;margin-bottom:6px;letter-spacing:-0.01em;}
+  .card-desc{font-size:14px;color:var(--text-sec);line-height:1.5;}
+  .arrow{color:var(--primary);font-size:22px;flex-shrink:0;transition:transform .2s ease;}
+  .card:hover .arrow{transform:translateX(4px);}
+
+  .footer{text-align:center;margin-top:48px;font-size:12px;color:rgba(255,255,255,0.35);}
+
+  @media (max-width:480px){
+    body{padding:32px 16px 64px;}
+    .header{margin-bottom:32px;}
+    .card{padding:22px 20px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="eyebrow">NextraLab</div>
+    <h1>One-pagers comerciais</h1>
+    <p class="sub">Selecione abaixo a apresentação que deseja visualizar.</p>
+  </div>
+
+  <div class="grid">
+
+    <a class="card" href="heimdall.html">
+      <div class="card-row">
+        <div class="card-text">
+          <div class="card-title">NextraLab × Zions Vision — Heimdall AI Analytics</div>
+          <div class="card-desc">O cérebro de IA para qualquer câmera.</div>
+        </div>
+        <div class="arrow">→</div>
+      </div>
+    </a>
+
+    <a class="card" href="acesso.html">
+      <div class="card-row">
+        <div class="card-text">
+          <div class="card-title">NextraLab × Aplicativo Acesso</div>
+          <div class="card-desc">Controle de acesso com IA e automação para portarias.</div>
+        </div>
+        <div class="arrow">→</div>
+      </div>
+    </a>
+
+    <a class="card" href="indicacao.html">
+      <div class="card-row">
+        <div class="card-text">
+          <div class="card-title">Programa de Indicação NextraLab</div>
+          <div class="card-desc">Indique e seja recompensado.</div>
+        </div>
+        <div class="arrow">→</div>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="footer">© NextraLab</div>
+
+</div>
+</body>
+</html>
