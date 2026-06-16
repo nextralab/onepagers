@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infografico - Atendimento Administrativo - Grupo Nextra</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #f0f2f5; color: #1a1a2e; padding: 40px 20px; }
+  .page { max-width: 1100px; margin: 0 auto; background: #fff; border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.08); overflow: hidden; }
+
+  /* HEADER */
+  .header { background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); color: #fff; padding: 50px 60px; text-align: center; }
+  .header h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+  .header p { font-size: 13px; font-weight: 400; opacity: 0.6; letter-spacing: 3px; text-transform: uppercase; }
+  .header .subtitle { margin-top: 14px; display: inline-block; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 6px 22px; font-size: 12px; letter-spacing: 1px; }
+  .header .scope-note { margin-top: 16px; font-size: 11px; opacity: 0.55; letter-spacing: 1px; }
+
+  /* COMPARISON */
+  .comparison { display: grid; grid-template-columns: 1fr 60px 1fr; }
+  .side { padding: 44px 40px; }
+  .side-before { background: #fef5f5; }
+  .side-after { background: #f0faf0; }
+  .arrow-col { display: flex; align-items: center; justify-content: center; background: linear-gradient(180deg, #fef5f5, #fff 50%, #f0faf0); }
+  .arrow-svg { width: 36px; height: 36px; }
+  .arrow-svg path { fill: #888; }
+
+  .side-label { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .dot-red { background: #e74c3c; }
+  .dot-green { background: #27ae60; }
+  .side-label h2 { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .side-before .side-label h2 { color: #c0392b; }
+  .side-after .side-label h2 { color: #1e8449; }
+  .side-label .scope-tag { margin-left: auto; font-size: 10px; padding: 3px 9px; border-radius: 8px; background: rgba(0,0,0,0.05); color: #777; letter-spacing: 0.5px; font-weight: 600; }
+
+  .metric-card { display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: rgba(255,255,255,0.7); border-radius: 12px; margin-bottom: 12px; }
+  .metric-card .emoji { font-size: 28px; line-height: 1; }
+  .metric-card .info .num { font-size: 32px; font-weight: 800; line-height: 1; }
+  .metric-card .info .label { font-size: 12px; color: #777; margin-top: 2px; }
+  .side-before .metric-card .info .num { color: #c0392b; }
+  .side-after .metric-card .info .num { color: #1e8449; }
+
+  .people-bar { display: flex; align-items: center; gap: 10px; padding: 10px 18px; background: rgba(255,255,255,0.5); border-radius: 10px; margin-bottom: 20px; font-size: 13px; color: #666; }
+  .people-bar strong { font-size: 18px; color: #333; }
+
+  .list-box { border-radius: 12px; padding: 18px 22px; }
+  .list-red { background: #fdeaea; border: 1px solid #f5c6cb; }
+  .list-green { background: #e8f8e8; border: 1px solid #b7e4c7; }
+  .list-box h3 { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .list-red h3 { color: #c0392b; }
+  .list-green h3 { color: #1e8449; }
+  .list-box ul { list-style: none; }
+  .list-box li { font-size: 13px; padding: 5px 0; display: flex; align-items: center; gap: 8px; color: #444; }
+  .list-box li .ic { flex-shrink: 0; font-size: 14px; }
+
+  /* SOLUTION STRIP */
+  .solution { background: linear-gradient(135deg, #1e8449, #27ae60); color: #fff; padding: 40px 60px; text-align: center; }
+  .solution .sol-label { font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; opacity: 0.6; margin-bottom: 10px; }
+  .solution h2 { font-size: 20px; font-weight: 800; margin-bottom: 28px; }
+  .model-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; align-items: stretch; }
+  .model-card { background: rgba(255,255,255,0.13); border: 1px solid rgba(255,255,255,0.2); border-radius: 16px; padding: 22px 24px; text-align: center; flex: 1; max-width: 260px; min-width: 180px; }
+  .model-card .mc-icon { font-size: 34px; margin-bottom: 8px; }
+  .model-card .mc-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .model-card .mc-desc { font-size: 11px; opacity: 0.85; line-height: 1.5; }
+  .model-arrow { display: flex; align-items: center; opacity: 0.5; }
+  .model-arrow svg { width: 22px; height: 22px; }
+  .model-arrow svg path { fill: #fff; }
+
+  /* DEPARTMENT CARDS */
+  .depts { padding: 44px 60px; background: #fafbfc; }
+  .depts h2 { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 6px; text-align: center; }
+  .depts .depts-sub { text-align: center; font-size: 11px; color: #bbb; margin-bottom: 24px; }
+  .dept-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+  .dept { border-radius: 16px; padding: 24px; background: #fff; border: 1px solid #e8ecf0; position: relative; overflow: hidden; }
+  .dept::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; }
+  .dept-blue::before { background: #3498db; }
+  .dept-purple::before { background: #9b59b6; }
+  .dept-teal::before { background: #16a085; }
+  .dept h3 { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+  .dept .dept-sub { font-size: 11px; color: #999; margin-bottom: 14px; }
+  .dept .dept-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+  .dept .dm { background: #f7f9fb; border-radius: 8px; padding: 10px; text-align: center; }
+  .dm .dm-num { font-size: 22px; font-weight: 800; }
+  .dm .dm-lbl { font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; }
+  .dm-red .dm-num { color: #e74c3c; }
+  .dm-green .dm-num { color: #27ae60; }
+  .dept .context-line { font-size: 12px; color: #555; background: #fef9e7; border-left: 3px solid #f1c40f; padding: 8px 12px; border-radius: 4px; margin-bottom: 14px; line-height: 1.4; }
+  .dept .context-line strong { color: #b7950b; }
+  .dept .tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 10px; margin-right: 4px; margin-bottom: 4px; }
+  .tag-red { background: #fdeaea; color: #c0392b; }
+  .tag-green { background: #e8f8e8; color: #1e8449; }
+  .tag-blue { background: #eaf2f8; color: #2471a3; }
+  .tag-yellow { background: #fef9e7; color: #b7950b; }
+  .tag-gray { background: #f2f3f4; color: #666; }
+  .tag-teal { background: #d4f1ec; color: #117864; }
+
+  /* EXCEPTION BOX */
+  .exception-box { margin-top: 14px; background: #fff8e1; border: 1px solid #ffe082; border-radius: 10px; padding: 12px 16px; font-size: 12px; color: #6d4c00; display: flex; align-items: flex-start; gap: 8px; }
+  .exception-box .ex-icon { font-size: 16px; flex-shrink: 0; }
+
+  /* BUSINESS CASE SECTION */
+  .biz { padding: 48px 60px; background: #fff; border-top: 1px solid #eee; }
+  .biz-header { text-align: center; margin-bottom: 30px; }
+  .biz-header .biz-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #999; margin-bottom: 6px; }
+  .biz-header h2 { font-size: 22px; font-weight: 800; color: #1a1a2e; }
+
+  .biz-hero { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+  .biz-hero-card { background: linear-gradient(135deg, #f0faf0, #e8f8e8); border: 1px solid #b7e4c7; border-radius: 16px; padding: 22px; text-align: center; }
+  .biz-hero-card .bhc-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #1e8449; margin-bottom: 8px; }
+  .biz-hero-card .bhc-num { font-size: 32px; font-weight: 800; color: #1e8449; line-height: 1; margin-bottom: 4px; }
+  .biz-hero-card .bhc-sub { font-size: 11px; color: #555; }
+
+  .biz-split { display: grid; grid-template-columns: 1.3fr 1fr; gap: 22px; margin-bottom: 22px; }
+
+  /* TCO TABLE */
+  .tco-block { background: #fafbfc; border: 1px solid #e8ecf0; border-radius: 14px; padding: 22px; }
+  .tco-block h3 { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #1a1a2e; margin-bottom: 14px; }
+  .tco-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .tco-table th { text-align: left; padding: 8px 6px; color: #999; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #e8ecf0; font-weight: 700; }
+  .tco-table th.num { text-align: right; }
+  .tco-table td { padding: 9px 6px; border-bottom: 1px solid #f0f2f5; color: #333; }
+  .tco-table td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; }
+  .tco-table tr.subtotal td { font-weight: 700; padding-top: 12px; padding-bottom: 12px; border-bottom: none; border-top: 2px solid #1a1a2e; }
+  .tco-table tr.subtotal td.num { color: #1a1a2e; font-size: 13px; }
+  .tco-table tr.zero td.num { color: #1e8449; font-weight: 700; }
+  .tco-savings { margin-top: 14px; background: #1e8449; color: #fff; border-radius: 10px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }
+  .tco-savings .ts-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; opacity: 0.85; }
+  .tco-savings .ts-num { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; }
+
+  /* VOIP BREAKEVEN */
+  .voip-block { background: #fff; border: 1px solid #e8ecf0; border-radius: 14px; padding: 22px; }
+  .voip-block h3 { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #1a1a2e; margin-bottom: 6px; }
+  .voip-block .voip-intro { font-size: 11px; color: #777; margin-bottom: 14px; line-height: 1.5; }
+  .voip-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .voip-table th { text-align: left; padding: 7px 5px; color: #999; font-size: 9px; letter-spacing: 0.8px; text-transform: uppercase; border-bottom: 1px solid #e8ecf0; font-weight: 700; }
+  .voip-table th.num { text-align: right; }
+  .voip-table td { padding: 9px 5px; border-bottom: 1px solid #f0f2f5; color: #333; }
+  .voip-table td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+  .voip-table td.cap { color: #1a1a2e; font-weight: 700; }
+  .voip-table tr.row-target { background: #fef9e7; }
+  .voip-table tr.row-target td { border-bottom-color: #f5e9b2; }
+  .voip-row-pill { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; }
+  .pill-ok { background: #d4f1ec; color: #117864; }
+  .pill-warn { background: #fef5e8; color: #b9651a; }
+  .pill-bad { background: #fdeaea; color: #c0392b; }
+
+  /* NEXTRA BRAIN HIGHLIGHT */
+  .nb-highlight { background: linear-gradient(135deg, #fef9e7, #fef5e8); border: 1px solid #f5cba7; border-radius: 14px; padding: 18px 22px; margin-bottom: 22px; display: flex; align-items: center; gap: 18px; }
+  .nb-highlight .nb-icon { font-size: 38px; line-height: 1; }
+  .nb-highlight .nb-text { flex: 1; }
+  .nb-highlight .nb-text strong { display: block; font-size: 13px; font-weight: 700; color: #b7651a; margin-bottom: 3px; }
+  .nb-highlight .nb-text span { font-size: 12px; color: #6d4c00; line-height: 1.5; }
+  .nb-highlight .nb-num { font-size: 26px; font-weight: 800; color: #1e8449; }
+
+  /* RECOMMENDATION BOX */
+  .recommendation { margin-top: 26px; background: linear-gradient(135deg, #1a1a2e, #16213e); color: #fff; border-radius: 14px; padding: 26px 30px; }
+  .recommendation .rec-eyebrow { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5; margin-bottom: 10px; }
+  .recommendation h3 { font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+  .recommendation .rec-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; }
+  .recommendation .rec-list li { font-size: 12px; padding-left: 22px; position: relative; line-height: 1.5; opacity: 0.92; }
+  .recommendation .rec-list li::before { content: '→'; position: absolute; left: 0; color: #f39c12; font-weight: 700; }
+  .recommendation .rec-list li strong { color: #f39c12; font-weight: 700; }
+
+  /* PENDINGS */
+  .pendings { padding: 36px 60px; background: #fafbfc; border-top: 1px solid #eee; }
+  .pendings h2 { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 6px; text-align: center; }
+  .pendings .p-sub { text-align: center; font-size: 11px; color: #bbb; margin-bottom: 22px; }
+  .p-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .p-card { background: #fff; border: 1px solid #e8ecf0; border-left: 3px solid #e67e22; border-radius: 12px; padding: 18px 20px; }
+  .p-card .p-icon { font-size: 22px; margin-bottom: 8px; }
+  .p-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .p-card p { font-size: 11px; color: #777; line-height: 1.5; }
+
+  /* IMPACT BANNER */
+  .impact { background: linear-gradient(135deg, #f39c12, #e67e22); color: #fff; padding: 36px 60px; }
+  .impact h2 { font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; opacity: 0.7; margin-bottom: 6px; text-align: center; }
+  .impact .impact-sub { text-align: center; font-size: 11px; opacity: 0.6; margin-bottom: 20px; letter-spacing: 0.5px; }
+  .impact-grid { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+  .impact-item { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 18px 20px; text-align: center; flex: 1; min-width: 130px; max-width: 180px; }
+  .impact-item .ii-num { font-size: 26px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+  .impact-item .ii-label { font-size: 11px; opacity: 0.85; line-height: 1.4; }
+
+  /* FOOTER */
+  .footer { padding: 24px 60px; text-align: center; font-size: 11px; color: #bbb; background: #fafbfc; border-top: 1px solid #eee; }
+
+  @media (max-width: 900px) {
+    .comparison { grid-template-columns: 1fr; }
+    .arrow-col { padding: 16px; background: linear-gradient(90deg, #fef5f5, #fff 50%, #f0faf0); }
+    .arrow-col .arrow-svg { transform: rotate(90deg); }
+    .dept-grid { grid-template-columns: 1fr; }
+    .biz-hero { grid-template-columns: 1fr; }
+    .biz-split { grid-template-columns: 1fr; }
+    .recommendation .rec-list { grid-template-columns: 1fr; }
+    .p-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <p>Grupo Nextra &bull; NextraLab</p>
+    <h1>Atendimento Administrativo</h1>
+    <div class="subtitle">Racionaliza&ccedil;&atilde;o de Chips, Aparelhos e Comunica&ccedil;&atilde;o</div>
+    <div class="scope-note">3 departamentos mapeados &bull; 19 colaboradores &bull; Apresenta&ccedil;&atilde;o &agrave; diretoria</div>
+  </div>
+
+  <!-- BEFORE vs AFTER -->
+  <div class="comparison">
+    <!-- BEFORE -->
+    <div class="side side-before">
+      <div class="side-label">
+        <div class="dot dot-red"></div>
+        <h2>Cen&aacute;rio Atual</h2>
+        <span class="scope-tag">3 deptos</span>
+      </div>
+      <div class="metric-card">
+        <div class="emoji">&#x1F4F1;</div>
+        <div class="info"><div class="num">15</div><div class="label">aparelhos corporativos</div></div>
+      </div>
+      <div class="metric-card">
+        <div class="emoji">&#x1F4B3;</div>
+        <div class="info"><div class="num">16</div><div class="label">chips / linhas ativas</div></div>
+      </div>
+      <div class="people-bar">&#x1F465; <strong>19</strong> pessoas (Fiscal + CP/CR + Compras/Estoque/Log&iacute;stica)</div>
+      <div class="list-box list-red">
+        <h3>&#x274C; Problemas</h3>
+        <ul>
+          <li><span class="ic">&#x1F6AB;</span> Sem rastreabilidade de conversas</li>
+          <li><span class="ic">&#x1F6AB;</span> Sem grava&ccedil;&atilde;o de chamadas</li>
+          <li><span class="ic">&#x1F6AB;</span> Sem m&eacute;tricas de esfor&ccedil;o</li>
+          <li><span class="ic">&#x1F6AB;</span> Sem CRM de cobran&ccedil;a (R$ 3M de inadimpl&ecirc;ncia sem pipeline)</li>
+          <li><span class="ic">&#x1F6AB;</span> Custo alto com aparelhos</li>
+          <li><span class="ic">&#x1F6AB;</span> Hist&oacute;rico perde com turnover</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ARROW -->
+    <div class="arrow-col">
+      <svg class="arrow-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13.5 4.5l-1.4 1.4L17.7 11.5H3v2h14.7l-5.6 5.6 1.4 1.4 8-8z"/>
+      </svg>
+    </div>
+
+    <!-- AFTER -->
+    <div class="side side-after">
+      <div class="side-label">
+        <div class="dot dot-green"></div>
+        <h2>Cen&aacute;rio Proposto</h2>
+        <span class="scope-tag">3 deptos</span>
+      </div>
+      <div class="metric-card">
+        <div class="emoji">&#x1F4F1;</div>
+        <div class="info"><div class="num">6</div><div class="label">aparelhos (&#x2212;60%)</div></div>
+      </div>
+      <div class="metric-card">
+        <div class="emoji">&#x1F4B3;</div>
+        <div class="info"><div class="num">10</div><div class="label">chips/linhas (&#x2212;38%)</div></div>
+      </div>
+      <div class="people-bar">&#x1F465; <strong>19</strong> pessoas &mdash; mesma opera&ccedil;&atilde;o</div>
+      <div class="list-box list-green">
+        <h3>&#x2705; Ganhos</h3>
+        <ul>
+          <li><span class="ic">&#x2705;</span> Rastreabilidade total (Nextra Brain)</li>
+          <li><span class="ic">&#x2705;</span> Grava&ccedil;&atilde;o de chamadas (VoIP)</li>
+          <li><span class="ic">&#x2705;</span> M&eacute;tricas + KPIs de esfor&ccedil;o</li>
+          <li><span class="ic">&#x2705;</span> CRM de inadimpl&ecirc;ncia com pipeline</li>
+          <li><span class="ic">&#x2705;</span> Redu&ccedil;&atilde;o direta de custos</li>
+          <li><span class="ic">&#x2705;</span> Hist&oacute;rico permanece na empresa</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOLUTION MODEL -->
+  <div class="solution">
+    <div class="sol-label">Modelo Replic&aacute;vel por Departamento</div>
+    <h2>Nextra Brain (interno) + VoIP Corporativo</h2>
+    <div class="model-row">
+      <div class="model-card">
+        <div class="mc-icon">&#x1F464;</div>
+        <div class="mc-title">L&iacute;der</div>
+        <div class="mc-desc">Mant&eacute;m chip + aparelho pr&oacute;prio<br>Autonomia total</div>
+      </div>
+      <div class="model-arrow">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 4.5l-1.4 1.4L17.7 11.5H3v2h14.7l-5.6 5.6 1.4 1.4 8-8z"/></svg>
+      </div>
+      <div class="model-card">
+        <div class="mc-icon">&#x1F9E0;</div>
+        <div class="mc-title">Time no Nextra Brain</div>
+        <div class="mc-desc">1 n&uacute;mero WhatsApp multi-agente<br>Sistema interno NextraLab<br>Identifica&ccedil;&atilde;o individual</div>
+      </div>
+      <div class="model-arrow">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 4.5l-1.4 1.4L17.7 11.5H3v2h14.7l-5.6 5.6 1.4 1.4 8-8z"/></svg>
+      </div>
+      <div class="model-card">
+        <div class="mc-icon">&#x1F4DE;</div>
+        <div class="mc-title">VoIP</div>
+        <div class="mc-desc">Softphone + headset no notebook<br>Ramais virtuais<br>Grava&ccedil;&atilde;o autom&aacute;tica</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEPARTMENT CARDS -->
+  <div class="depts">
+    <h2>Detalhamento dos Departamentos Mapeados</h2>
+    <div class="depts-sub">Todos os 3 departamentos administrativos com l&iacute;deres entrevistadas</div>
+    <div class="dept-grid">
+
+      <!-- FISCAL -->
+      <div class="dept dept-blue">
+        <h3>Fiscal e Faturamento</h3>
+        <div class="dept-sub">L&iacute;der: Renata Peppi &bull; 5 pessoas</div>
+        <div class="dept-row">
+          <div class="dm dm-red"><div class="dm-num">5 &rarr; 1</div><div class="dm-lbl">Aparelhos</div></div>
+          <div class="dm dm-red"><div class="dm-num">5 &rarr; 2</div><div class="dm-lbl">Chips</div></div>
+        </div>
+        <span class="tag tag-green">&#x1F9E0; Multi-agente</span>
+        <span class="tag tag-blue">&#x1F4DE; VoIP</span>
+        <span class="tag tag-green">&#x2705; Rastreabilidade</span>
+      </div>
+
+      <!-- CP/CR -->
+      <div class="dept dept-purple">
+        <h3>Contas a Pagar e Receber</h3>
+        <div class="dept-sub">L&iacute;der: La&iacute;s Centolanza &bull; 5 pessoas</div>
+        <div class="dept-row">
+          <div class="dm dm-red"><div class="dm-num">4 &rarr; 2</div><div class="dm-lbl">Aparelhos</div></div>
+          <div class="dm dm-red"><div class="dm-num">4 &rarr; 3</div><div class="dm-lbl">Chips</div></div>
+        </div>
+        <div class="context-line">
+          <strong>Carteira de inadimpl&ecirc;ncia: R$ 3M</strong> &mdash; hoje sem pipeline, sem hist&oacute;rico de contato e sem KPIs de cobran&ccedil;a.
+        </div>
+        <span class="tag tag-green">&#x1F9E0; Multi-agente</span>
+        <span class="tag tag-blue">&#x1F4DE; VoIP obrigat&oacute;rio</span>
+        <span class="tag tag-yellow">&#x1F4B0; CRM inadimpl&ecirc;ncia</span>
+        <div class="exception-box">
+          <span class="ex-icon">&#x1F512;</span>
+          <span><strong>Exce&ccedil;&atilde;o: Cl&aacute;udia</strong> &mdash; mant&eacute;m aparelho separado (apps banc&aacute;rios). Sem conex&atilde;o ao Nextra Brain por seguran&ccedil;a.</span>
+        </div>
+      </div>
+
+      <!-- COMPRAS / ESTOQUE / LOGISTICA -->
+      <div class="dept dept-teal">
+        <h3>Compras, Estoque e Log&iacute;stica</h3>
+        <div class="dept-sub">L&iacute;der: Patr&iacute;cia Sapanhos &bull; 9 pessoas</div>
+        <div class="dept-row">
+          <div class="dm dm-red"><div class="dm-num">6 &rarr; 3</div><div class="dm-lbl">Aparelhos</div></div>
+          <div class="dm dm-red"><div class="dm-num">7 &rarr; 5</div><div class="dm-lbl">Chips/Linhas</div></div>
+        </div>
+        <div class="context-line">
+          <strong>Cobertura fora do hor&aacute;rio:</strong> Patr&iacute;cia, Gustavo (Compras) e Henrique (Log&iacute;stica) mant&ecirc;m aparelho pr&oacute;prio por receberem demandas fora do expediente.
+        </div>
+        <span class="tag tag-teal">&#x1F9E0; 2 multi-agentes (Compras + Estoque)</span>
+        <span class="tag tag-blue">&#x1F4DE; VoIP</span>
+        <span class="tag tag-gray">&#x260E;&#xFE0F; Reaproveita linha fixa do Estoque</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BUSINESS CASE FINANCEIRO -->
+  <div class="biz">
+    <div class="biz-header">
+      <div class="biz-eyebrow">An&aacute;lise Financeira</div>
+      <h2>Business Case &mdash; TCO e Economicidade</h2>
+    </div>
+
+    <!-- HERO NUMBERS -->
+    <div class="biz-hero">
+      <div class="biz-hero-card">
+        <div class="bhc-label">Economia mensal direta</div>
+        <div class="bhc-num">R$ 539,94</div>
+        <div class="bhc-sub">~47% sobre o cen&aacute;rio atual</div>
+      </div>
+      <div class="biz-hero-card">
+        <div class="bhc-label">Economia anual direta</div>
+        <div class="bhc-num">R$ 6.479,28</div>
+        <div class="bhc-sub">Anualizado, antes do VoIP</div>
+      </div>
+      <div class="biz-hero-card">
+        <div class="bhc-label">Redu&ccedil;&atilde;o de ativos</div>
+        <div class="bhc-num">&minus;9 / &minus;6</div>
+        <div class="bhc-sub">9 aparelhos e 6 chips a menos</div>
+      </div>
+    </div>
+
+    <!-- NEXTRA BRAIN HIGHLIGHT -->
+    <div class="nb-highlight">
+      <div class="nb-icon">&#x1F9E0;</div>
+      <div class="nb-text">
+        <strong>Nextra Brain &mdash; sistema interno NextraLab</strong>
+        <span>4 inst&acirc;ncias multi-agente (Fiscal + Contas a Receber + Compras + Estoque) rodando sobre Evolution API. <strong>Sem licenciamento, sem custo recorrente.</strong></span>
+      </div>
+      <div class="nb-num">R$ 0</div>
+    </div>
+
+    <!-- TCO + VOIP -->
+    <div class="biz-split">
+
+      <!-- TCO COMPARISON -->
+      <div class="tco-block">
+        <h3>TCO Direto &mdash; Antes vs. Depois</h3>
+        <table class="tco-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th class="num">Qtde</th>
+              <th class="num">Mensal</th>
+              <th class="num">Anual</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="4" style="padding-top:6px; color:#c0392b; font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase;">Cen&aacute;rio Atual</td></tr>
+            <tr><td>Chips (plano 6GB &middot; R$ 39,99)</td><td class="num">16</td><td class="num">R$ 639,84</td><td class="num">R$ 7.678,08</td></tr>
+            <tr><td>Aparelhos (R$ 800 / 24 meses)</td><td class="num">15</td><td class="num">R$ 500,00</td><td class="num">R$ 6.000,00</td></tr>
+            <tr class="subtotal"><td>Subtotal Atual</td><td class="num">&mdash;</td><td class="num">R$ 1.139,84</td><td class="num">R$ 13.678,08</td></tr>
+
+            <tr><td colspan="4" style="padding-top:16px; color:#1e8449; font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase;">Cen&aacute;rio Proposto</td></tr>
+            <tr><td>Chips (plano 6GB &middot; R$ 39,99)</td><td class="num">10</td><td class="num">R$ 399,90</td><td class="num">R$ 4.798,80</td></tr>
+            <tr><td>Aparelhos (R$ 800 / 24 meses)</td><td class="num">6</td><td class="num">R$ 200,00</td><td class="num">R$ 2.400,00</td></tr>
+            <tr class="zero"><td>Nextra Brain (sistema interno)</td><td class="num">4</td><td class="num">R$ 0,00</td><td class="num">R$ 0,00</td></tr>
+            <tr class="subtotal"><td>Subtotal Proposto (sem VoIP)</td><td class="num">&mdash;</td><td class="num">R$ 599,90</td><td class="num">R$ 7.198,80</td></tr>
+          </tbody>
+        </table>
+        <div class="tco-savings">
+          <div class="ts-label">Economia direta pr&eacute;-VoIP</div>
+          <div class="ts-num">R$ 539,94/m&ecirc;s</div>
+        </div>
+      </div>
+
+      <!-- VOIP BREAKEVEN -->
+      <div class="voip-block">
+        <h3>An&aacute;lise de Breakeven do VoIP</h3>
+        <div class="voip-intro">
+          O &uacute;nico OPEX novo do projeto &eacute; o VoIP/PABX em nuvem. A tabela mostra o <strong>teto m&aacute;ximo</strong> de custo VoIP que ainda mant&eacute;m cada n&iacute;vel de economia. Estimativa de <strong>~18 ramais</strong>.
+        </div>
+        <table class="voip-table">
+          <thead>
+            <tr>
+              <th>Cen&aacute;rio</th>
+              <th class="num">Teto VoIP/m&ecirc;s</th>
+              <th class="num">Por ramal</th>
+              <th>Mercado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Break-even</td>
+              <td class="num cap">R$ 539,94</td>
+              <td class="num">~ R$ 30</td>
+              <td><span class="voip-row-pill pill-ok">F&aacute;cil</span></td>
+            </tr>
+            <tr class="row-target">
+              <td><strong>Conservador</strong></td>
+              <td class="num cap">R$ 439,94</td>
+              <td class="num">~ R$ 24</td>
+              <td><span class="voip-row-pill pill-ok">Vi&aacute;vel</span></td>
+            </tr>
+            <tr>
+              <td>Base</td>
+              <td class="num cap">R$ 289,94</td>
+              <td class="num">~ R$ 16</td>
+              <td><span class="voip-row-pill pill-warn">Apertado</span></td>
+            </tr>
+            <tr>
+              <td>Agressivo</td>
+              <td class="num cap">R$ 139,94</td>
+              <td class="num">~ R$ 7,80</td>
+              <td><span class="voip-row-pill pill-bad">Improv&aacute;vel</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:14px; font-size:11px; color:#777; line-height:1.5;">
+          <strong style="color:#b7651a;">Refer&ecirc;ncia de mercado:</strong> Entry R$ 15&ndash;25/ramal &middot; M&eacute;dio R$ 25&ndash;40/ramal &middot; Premium R$ 40&ndash;60/ramal.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RECOMMENDATION -->
+    <div class="recommendation">
+      <div class="rec-eyebrow">Recomenda&ccedil;&atilde;o Final</div>
+      <h3>Seguir com a implementa&ccedil;&atilde;o usando teto de VoIP como balizador</h3>
+      <ul class="rec-list">
+        <li><strong>Target de negocia&ccedil;&atilde;o:</strong> ficar entre R$ 290 e R$ 440/m&ecirc;s total &mdash; mant&eacute;m economia direta l&iacute;quida.</li>
+        <li><strong>Limite m&aacute;ximo:</strong> R$ 540/m&ecirc;s (break-even). Ainda recomendado pelos ganhos qualitativos.</li>
+        <li><strong>Acima de R$ 540:</strong> reavaliar &mdash; precisa justificativa pelo potencial de recupera&ccedil;&atilde;o dos R$ 3M de inadimpl&ecirc;ncia.</li>
+        <li><strong>N&atilde;o esquecer:</strong> softphone para smartphone (cobertura fora do hor&aacute;rio) e grava&ccedil;&atilde;o inclusa.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- PENDINGS -->
+  <div class="pendings">
+    <h2>Pr&oacute;ximos Passos Cr&iacute;ticos</h2>
+    <div class="p-sub">Itens em aberto antes da implementa&ccedil;&atilde;o completa</div>
+    <div class="p-grid">
+      <div class="p-card">
+        <div class="p-icon">&#x1F4DE;</div>
+        <h4>Cotar VoIP (3 provedores)</h4>
+        <p>RFP curto &middot; teto R$ 440/m&ecirc;s &middot; exigir grava&ccedil;&atilde;o inclusa e softphone para smartphone.</p>
+      </div>
+      <div class="p-card">
+        <div class="p-icon">&#x1F9E0;</div>
+        <h4>Configurar Nextra Brain</h4>
+        <p>4 inst&acirc;ncias multi-agente (Fiscal + Contas a Receber + Compras + Estoque). Sem custo, time interno.</p>
+      </div>
+      <div class="p-card">
+        <div class="p-icon">&#x1F4B0;</div>
+        <h4>Pipeline de cobran&ccedil;a</h4>
+        <p>Estruturar cad&ecirc;ncia e KPIs para Contas a Receber atacar os R$ 3M de inadimpl&ecirc;ncia.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMPACT BANNER -->
+  <div class="impact">
+    <h2>&#x1F4CA; Impacto Total Estimado</h2>
+    <div class="impact-sub">Considerando os 3 departamentos administrativos mapeados</div>
+    <div class="impact-grid">
+      <div class="impact-item">
+        <div class="ii-num">&minus;60%</div>
+        <div class="ii-label">Aparelhos<br>15 &rarr; 6</div>
+      </div>
+      <div class="impact-item">
+        <div class="ii-num">&minus;38%</div>
+        <div class="ii-label">Chips/Linhas<br>16 &rarr; 10</div>
+      </div>
+      <div class="impact-item">
+        <div class="ii-num">R$ 6.479</div>
+        <div class="ii-label">Economia<br>direta/ano</div>
+      </div>
+      <div class="impact-item">
+        <div class="ii-num">100%</div>
+        <div class="ii-label">Rastreabilidade<br>+ grava&ccedil;&atilde;o</div>
+      </div>
+      <div class="impact-item">
+        <div class="ii-num">R$ 3M</div>
+        <div class="ii-label">Inadimpl&ecirc;ncia<br>com pipeline</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    NextraLab &bull; Projeto Atendimento Administrativo &bull; Maio 2026 &bull; Vers&atilde;o 3 (apresenta&ccedil;&atilde;o &agrave; diretoria)
+  </div>
+
+</div>
+</body>
+</html>
